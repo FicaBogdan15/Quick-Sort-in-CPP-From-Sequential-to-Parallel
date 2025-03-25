@@ -47,7 +47,7 @@ int main() {
 		cerr << "Error: Could not open the file!" << endl;
 		return 1;  
 	}
-	cout << "File was opened"<<endl;
+	
 
 	
 
@@ -55,7 +55,7 @@ int main() {
 		numbers.push_back(value);
 		
 	}
-	cout << "The input was placed int the vector."<<endl;
+	
 
 	int n = numbers.size();
 	cout << n << endl;
