@@ -38,17 +38,15 @@ __global__ void partitionPhase2(int* d_bufSmall,
                                 int* d_countLarge,
                                 int n)
 {
-    int tid     = threadIdx.x;     // 0..3
+    int tid     = threadIdx.x;     
     int quarter = (n+3) / 4;
 
     int totalSmall = 0;
-    #pragma unroll
     for(int i = 0; i < 4; i++)
         totalSmall += d_countSmall[i];
 
     int sources[2], cnts[2], offset = 0;
     if (tid == 0) {
-        // A preia < pivot din A(0) apoi din D(3)
         sources[0] = 0; sources[1] = 3;
         cnts[0]    = d_countSmall[0];
         cnts[1]    = d_countSmall[3];
@@ -61,7 +59,6 @@ __global__ void partitionPhase2(int* d_bufSmall,
         }
     }
     else if (tid == 1) {
-        // B preia < pivot din B(1) apoi din C(2)
         sources[0] = 1; sources[1] = 2;
         cnts[0]    = d_countSmall[1];
         cnts[1]    = d_countSmall[2];
@@ -74,7 +71,6 @@ __global__ void partitionPhase2(int* d_bufSmall,
         }
     }
     else if (tid == 2) {
-        // C preia >= pivot din C(2) apoi din B(1)
         sources[0] = 2; sources[1] = 1;
         cnts[0]    = d_countLarge[2];
         cnts[1]    = d_countLarge[1];
@@ -87,7 +83,6 @@ __global__ void partitionPhase2(int* d_bufSmall,
         }
     }
     else if (tid == 3) {
-        // D preia >= pivot din D(3) apoi din A(0)
         sources[0] = 3; sources[1] = 0;
         cnts[0]    = d_countLarge[3];
         cnts[1]    = d_countLarge[0];
